@@ -15,7 +15,8 @@ import java.io.IOException;
 public class FirebaseConfig {
     @PostConstruct
     public void initFirebase() throws IOException {
-        FileInputStream serviceAccount = new FileInputStream("src/main/resources/credential-firebase.json");
+        //FileInputStream serviceAccount = new FileInputStream("src/main/resources/credential-firebase.json");
+        FileInputStream serviceAccount = new FileInputStream("/etc/secrets/credential-firebase.json");
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
