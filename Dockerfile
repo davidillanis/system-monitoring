@@ -1,6 +1,14 @@
 
-FROM amazoncorretto:17-alpine-jdk
+#FROM amazoncorretto:17-alpine-jdk
+#COPY target/system-monitoring-collector-0.0.1-SNAPSHOT.jar app.jar
+#ENTRYPOINT ["java", "-jar", "/app.jar"]
 
-COPY target/system-monitoring-collector-0.0.1-SNAPSHOT.jar app.jar
+FROM eclipse-temurin:17-jdk
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+WORKDIR /app
+COPY . .
+
+RUN ./mvnw clean package
+
+CMD ["java", "-jar", "target/system-monitoring-collector-0.0.1-SNAPSHOT.jar"]
+
