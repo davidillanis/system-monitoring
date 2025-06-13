@@ -1,0 +1,41 @@
+HELP.md
+
+# Ignorar todo archivo .jar
+*.jar
+
+# Ignorar carpeta target de Maven
+target/
+
+# Ignorar wrapper de Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# FIREBASE: evitar subir credenciales
+/src/main/resources/credential-firebase.json
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Gradle y builds
+build/
+
+### VS Code ###
+.vscode/
