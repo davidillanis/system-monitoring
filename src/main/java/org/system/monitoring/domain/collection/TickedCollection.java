@@ -15,7 +15,7 @@ public class TickedCollection implements GenericEntity {
     private String id;
     private Date exchangeDate;
     private Date creationDate;
-    private boolean isValid;
+    private boolean valid;
 
     private DocRefAttribute residentRef;
     private DocRefAttribute bonusRef;

@@ -1,6 +1,7 @@
 package org.system.monitoring.application.mapper;
 
 import com.github.javafaker.Faker;
+import org.system.monitoring.application.util.EStatus;
 import org.system.monitoring.domain.collection.dto.request.*;
 import org.system.monitoring.infrastructure.firebase.util.ERole;
 
@@ -44,7 +45,8 @@ public class FakeEntity {
                 instance.phoneNumber().phoneNumber(),
                 instance.address().fullAddress(),
                 instance.internet().image(),
-                ERole.RECYCLER
+                ERole.RECYCLER,
+                EStatus.ACTIVE
         );
     }
 

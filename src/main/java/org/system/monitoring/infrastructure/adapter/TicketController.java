@@ -1,5 +1,6 @@
 package org.system.monitoring.infrastructure.adapter;
 
+import com.google.cloud.firestore.Filter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,6 +38,12 @@ public class TicketController {
         return UtilsController.list(documentService, new DefaultResponse(limit, className), className);
     }
 
+    @GetMapping("/resident/{uid}")
+    public CompletableFuture<ResponseEntity<?>> resident(@PathVariable String uid) throws ExecutionException, InterruptedException {
+        Filter filter = Filter.equalTo("residentRef.uidRef", uid);
+        return UtilsController.list(documentService, new DefaultResponse(null, className), className, filter);
+    }
+
     @GetMapping("/search")
     public CompletableFuture<ResponseEntity<?>> search(@RequestParam String search)  {
         if (search == null || search.trim().isEmpty()) {
@@ -59,7 +66,7 @@ public class TicketController {
     @PutMapping("/update")
     public ResponseEntity<ResponseStatusDTO> update(@Valid @RequestBody TicketRequestDTO obj,
                                                     BindingResult binding,
-                                                    @RequestParam(required = false) String uid) {
+                                                    @RequestParam String uid) {
         var responseSupplier = DefaultResponse.defaultByID(uid, className);
         return UtilsController.save(binding, () -> documentService.update(responseSupplier, obj));
     }

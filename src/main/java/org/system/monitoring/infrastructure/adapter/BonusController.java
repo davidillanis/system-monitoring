@@ -59,7 +59,7 @@ public class BonusController {
     @PutMapping("/update")
     public ResponseEntity<ResponseStatusDTO> update(@Valid @RequestBody BonusRequestDTO obj,
                                                     BindingResult binding,
-                                                    @RequestParam(required = false) String uid) {
+                                                    @RequestParam String uid) {
         var responseSupplier = DefaultResponse.defaultByID(uid, className);
         return UtilsController.save(binding, () -> documentService.update(responseSupplier, obj));
     }

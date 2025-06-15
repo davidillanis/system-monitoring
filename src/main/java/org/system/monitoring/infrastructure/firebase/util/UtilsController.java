@@ -1,5 +1,6 @@
 package org.system.monitoring.infrastructure.firebase.util;
 
+import com.google.cloud.firestore.Filter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -43,12 +44,40 @@ public class UtilsController {
         }
     }
 
-    public static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> list(DocumentService documentService,
+    /*public static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> list(DocumentService documentService,
                                                                                            DefaultResponse defaultResponse,
                                                                                            Class<T> responseClass) {
         return documentService.list(defaultResponse, responseClass)
                 .thenApply(list -> list.isEmpty()? ResponseEntity.noContent().build(): ResponseEntity.ok(list))
                 .exceptionally(e -> ResponseEntity.internalServerError().build());
+    }
+
+    public static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> list(DocumentService documentService,
+                                                                                           DefaultResponse defaultResponse,
+                                                                                           Class<T> responseClass,
+                                                                                           Filter filter) {
+        return documentService.list(defaultResponse, filter, responseClass)
+                .thenApply(list -> list.isEmpty()? ResponseEntity.noContent().build(): ResponseEntity.ok(list))
+                .exceptionally(e -> ResponseEntity.internalServerError().build());
+    }*/
+    private static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> list(Supplier<CompletableFuture<List<T>>> listSupplier) {
+
+        return listSupplier.get()
+                .thenApply(list -> list.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(list))
+                .exceptionally(e -> ResponseEntity.internalServerError().build());
+    }
+
+    public static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> list(DocumentService documentService,
+                                                                                           DefaultResponse defaultResponse,
+                                                                                           Class<T> responseClass) {
+        return list(() -> documentService.list(defaultResponse, responseClass));
+    }
+
+    public static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> list(DocumentService documentService,
+                                                                                           DefaultResponse defaultResponse,
+                                                                                           Class<T> responseClass,
+                                                                                           Filter filter) {
+        return list(() -> documentService.list(defaultResponse, filter, responseClass));
     }
 
     public static <T extends GenericResponse<?>> CompletableFuture<ResponseEntity<?>> search(DocumentService documentService,
@@ -87,7 +116,5 @@ public class UtilsController {
                     .getInstance(false, EMessage.RESOURCE_NOT_FOUND, List.of(e.getMessage().split(","))));
         }
     }
-
-
 
 }
